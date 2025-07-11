@@ -16,18 +16,33 @@
   "files": [
     "dist",
     "README.md",
-    "LICENSE"
+    "LICENSE",
+    "CHANGELOG.md"
   ],
   "scripts": {
     "build": "rollup -c",
     "test": "jest",
-    "lint": "eslint src/**/*.{ts,tsx}",
+    "lint": "eslint \"src/**/*.{ts,tsx}\"",
     "typecheck": "tsc --noEmit",
-    "prepublishOnly": "npm run build"
+    "dev": "pwsh -ExecutionPolicy Bypass -File scripts/dev.ps1",
+    "dev:test": "pwsh -ExecutionPolicy Bypass -File scripts/dev.ps1 -Task test",
+    "dev:build": "pwsh -ExecutionPolicy Bypass -File scripts/dev.ps1 -Task build",
+    "dev:lint": "pwsh -ExecutionPolicy Bypass -File scripts/dev.ps1 -Task lint",
+    "dev:typecheck": "pwsh -ExecutionPolicy Bypass -File scripts/dev.ps1 -Task typecheck",
+    "prepublishOnly": "npm run build && npm run test && npm run lint && npm run typecheck",
+    "release": "node scripts/release.js patch",
+    "release:minor": "node scripts/release.js minor",
+    "release:major": "node scripts/release.js major",
+    "release:ps": "pwsh -ExecutionPolicy Bypass -File scripts/release.ps1",
+    "release:ps:minor": "pwsh -ExecutionPolicy Bypass -File scripts/release.ps1 -VersionType minor",
+    "release:ps:major": "pwsh -ExecutionPolicy Bypass -File scripts/release.ps1 -VersionType major"
   },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/xarlizard/react-api-forge.git"
+  },
+  "publishConfig": {
+    "access": "public"
   },
   "homepage": "https://github.com/xarlizard/react-api-forge#readme",
   "bugs": {
@@ -54,22 +69,23 @@
   },
   "license": "MIT",
   "peerDependencies": {
-    "react": ">=16.8.0",
-    "axios": ">=0.21.0"
+    "axios": ">=0.21.0",
+    "react": ">=16.8.0"
   },
   "devDependencies": {
-    "@types/react": "^18.2.0",
+    "@rollup/plugin-typescript": "^11.0.0",
     "@types/jest": "^29.0.0",
-    "@typescript-eslint/eslint-plugin": "^6.0.0",
-    "@typescript-eslint/parser": "^6.0.0",
+    "@types/react": "^18.2.0",
+    "@typescript-eslint/eslint-plugin": "^8.36.0",
+    "@typescript-eslint/parser": "^8.36.0",
     "eslint": "^8.0.0",
     "jest": "^29.0.0",
     "rollup": "^3.0.0",
-    "@rollup/plugin-typescript": "^11.0.0",
-    "typescript": "^5.0.0",
-    "tslib": "^2.0.0"
+    "ts-jest": "^29.4.0",
+    "tslib": "^2.0.0",
+    "typescript": "^5.0.0"
   },
   "dependencies": {
-    "axios": "^1.4.0"
+    "axios": ">=0.21.0"
   }
 }
