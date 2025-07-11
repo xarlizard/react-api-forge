@@ -5,6 +5,20 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.0.1] - 2025-07-11
+
+### Changed
+
+- Updated minimum Axios version from `>=0.21.0` to `^1.10.0` for better security and performance
+- Updated minimum React version from `>=16.8.0` to `^19.1.0` for latest features and improvements
+- Added Axios as both dependency and peerDependency for optimal user experience
+- Improved dependency management to prevent version conflicts
+
+### Fixed
+
+- Resolved potential React hook conflicts by optimizing dependency structure
+- Enhanced npm linking compatibility for local development
+
 ## [1.0.0] - 2025-07-11
 
 ### Added

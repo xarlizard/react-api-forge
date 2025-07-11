@@ -1,6 +1,6 @@
 {
   "name": "react-api-forge",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "A flexible and robust React hook factory for creating API hooks with consistent patterns",
   "type": "module",
   "main": "dist/index.js",
@@ -68,9 +68,12 @@
     "url": "https://github.com/xarlizard"
   },
   "license": "MIT",
+  "dependencies": {
+    "axios": "^1.10.0"
+  },
   "peerDependencies": {
-    "axios": ">=0.21.0",
-    "react": ">=16.8.0"
+    "axios": "^1.10.0",
+    "react": "^19.1.0"
   },
   "devDependencies": {
     "@rollup/plugin-typescript": "^11.0.0",
@@ -83,9 +86,7 @@
     "rollup": "^3.0.0",
     "ts-jest": "^29.4.0",
     "tslib": "^2.0.0",
-    "typescript": "^5.0.0"
-  },
-  "dependencies": {
-    "axios": ">=0.21.0"
+    "typescript": "^5.0.0",
+    "react": "^19.1.0"
   }
 }
