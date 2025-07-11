@@ -36,7 +36,7 @@ pnpm add react-api-forge
 ### GitHub Packages
 
 ```bash
-npm install @xarlizard/react-api-forge
+npm install @Xarlizard/react-api-forge
 ```
 
 > **Note**: For GitHub Packages, you'll need to configure your `.npmrc` file. See [PUBLISHING.md](./PUBLISHING.md) for details.

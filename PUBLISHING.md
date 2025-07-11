@@ -1,6 +1,6 @@
 # Publishing
 
-This package is published to NPM as `react-api-forge` and to GitHub Packages as `@xarlizard/react-api-forge`.
+This package is published to NPM as `react-api-forge` and to GitHub Packages as `@Xarlizard/react-api-forge`.
 
 ## Installation
 
@@ -15,14 +15,14 @@ npm install react-api-forge
 First, configure your `.npmrc`:
 
 ```
-@xarlizard:registry=https://npm.pkg.github.com
+@Xarlizard:registry=https://npm.pkg.github.com
 //npm.pkg.github.com/:_authToken=YOUR_GITHUB_TOKEN
 ```
 
 Then install:
 
 ```bash
-npm install @xarlizard/react-api-forge
+npm install @Xarlizard/react-api-forge
 ```
 
 ## Release Process
