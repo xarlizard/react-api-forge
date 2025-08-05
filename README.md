@@ -3,7 +3,6 @@
 [![npm version](https://badge.fury.io/js/react-api-forge.svg)](https://badge.fury.io/js/react-api-forge)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![TypeScript](https://img.shields.io/badge/TypeScript-Ready-blue.svg)](https://www.typescriptlang.org/)
-[![CI/CD](https://github.com/xarlizard/react-api-forge/actions/workflows/publish.yml/badge.svg)](https://github.com/xarlizard/react-api-forge/actions/workflows/publish.yml)
 [![Production Deployment](https://github.com/xarlizard/react-api-forge/actions/workflows/deploy.yml/badge.svg?branch=main)](https://github.com/xarlizard/react-api-forge/actions/workflows/deploy.yml)
 [![Coverage](https://codecov.io/gh/xarlizard/react-api-forge/branch/main/graph/badge.svg)](https://codecov.io/gh/xarlizard/react-api-forge)
 
