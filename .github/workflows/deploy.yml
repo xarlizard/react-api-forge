@@ -10,7 +10,7 @@ jobs:
     runs-on: ubuntu-latest
     environment:
       name: production
-      url: https://your-deployment-url.com
+      url: https://www.npmjs.com/package/react-api-forge
 
     steps:
       - uses: actions/checkout@v3
