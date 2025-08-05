@@ -1,6 +1,6 @@
 {
   "name": "react-api-forge",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "A flexible and robust React hook factory for creating API hooks with consistent patterns",
   "type": "module",
   "main": "dist/index.js",
