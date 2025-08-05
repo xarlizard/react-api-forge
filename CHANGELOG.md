@@ -8,7 +8,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [1.0.2] - 2025-08-05
 
 ### Added
-- Workflows for Deploy, Security, CI
+- Workflow for Deploy, and updated the Publish workflow
 - Dependabot yml
 - Templates for pull requests and issues
 - Updated some dependencies
