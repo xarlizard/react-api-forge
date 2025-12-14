@@ -48,17 +48,20 @@ npm install @Xarlizard/react-api-forge
 ```typescript
 import { createApiHook } from "react-api-forge";
 
-// Create a typed API hook
+// Create a typed API hook with unified options array
 const useGetUser = createApiHook({
   method: "GET",
   baseURL: "https://api.example.com",
   endpoint: "/users/:userId",
-  requiredProps: ["userId"],
-  defaultProps: {
-    lang: "en_US",
-  },
-  pathParams: ["userId"],
-  queryParams: ["lang"],
+  // Path params are automatically extracted from endpoint
+  options: [
+    {
+      key: "lang",
+      location: "query",
+      defaultValue: "en_US",
+      // Optional (has defaultValue, so implicitly optional)
+    },
+  ],
 });
 
 // Use in your component
@@ -66,7 +69,10 @@ const UserProfile = ({ userId }) => {
   const { response, error, loading, fetchData } = useGetUser();
 
   useEffect(() => {
-    fetchData({ userId, lang: "es_ES" });
+    fetchData({
+      path: { userId },
+      query: { lang: "es_ES" }
+    });
   }, [userId]);
 
   if (loading) return <div>Loading...</div>;
@@ -89,18 +95,29 @@ Creates a custom API hook with the specified configuration.
 
 | Property            | Type                        | Required | Description                                              |
 | ------------------- | --------------------------- | -------- | -------------------------------------------------------- |
-| `method`            | `Method`                    | ✅       | HTTP method (GET, POST, PUT, DELETE, etc.)               |
+| `method`            | `Method`                    | ✅       | HTTP method (GET, POST, PUT, DELETE, PATCH, etc.)        |
 | `baseURL`           | `string`                    | ✅       | Base URL for the API endpoint                            |
-| `endpoint`          | `string \| function`        | ✅       | Endpoint path or function that returns path              |
-| `requiredProps`     | `array`                     | ❌       | Array of required property names                         |
-| `defaultProps`      | `object`                    | ❌       | Default values for properties                            |
-| `pathParams`        | `array`                     | ❌       | Array of path parameter names (for `:param` replacement) |
-| `queryParams`       | `array`                     | ❌       | Array of query parameter names                           |
+| `endpoint`          | `string`                    | ✅       | Endpoint path (path params like `:userId` are auto-extracted) |
+| `options`           | `ApiParam[]`                | ❌       | Array of parameter definitions (query, header, body only) |
 | `headers`           | `object`                    | ❌       | Custom headers for requests                              |
 | `validateResponse`  | `function`                  | ❌       | Function to validate response data                       |
 | `transformResponse` | `function`                  | ❌       | Function to transform response data                      |
 | `onError`           | `function`                  | ❌       | Global error handler function                            |
-| `functionName`      | `'fetchData' \| 'postData'` | ❌       | Name of the function returned by hook                    |
+| `functionName`      | `string`                    | ❌       | Custom function name (auto-generated from method if not provided) |
+
+##### `ApiParam` Interface
+
+Each parameter in the `options` array is defined using the `ApiParam` interface:
+
+| Property        | Type            | Required | Description                                                      |
+| --------------- | --------------- | -------- | ---------------------------------------------------------------- |
+| `key`           | `string`        | ✅       | Parameter name/key                                                |
+| `location`      | `ParamLocation` | ✅       | Where the parameter is used: `"query"`, `"header"`, `"body"` (path params are auto-extracted from endpoint) |
+| `required`      | `boolean`       | ❌       | Whether the parameter is required from the user's perspective. **Important:** If `defaultValue` is provided, this parameter is automatically optional (the `required` flag is ignored). The API will always receive a value (either user-provided or the default), but users don't need to provide it.<br/>- Options with `defaultValue` are optional (implicit) - `required` is ignored<br/>- Only specify `required: true` for options without `defaultValue` that must be provided |
+| `defaultValue`  | `any`           | ❌       | Default value for the parameter. If provided, the option is automatically optional (users don't need to provide it), and the API will always receive a value (either user-provided or this default) |
+| `valueType`     | `T`             | ❌       | Type hint for TypeScript inference (runtime ignored)             |
+
+**Note:** Path parameters are automatically extracted from the endpoint string (e.g., `/users/:userId` extracts `userId`). You don't need to define them in the `options` array.
 
 #### Returned Hook
 
@@ -113,6 +130,29 @@ The generated hook returns an object with:
 | `loading`   | `boolean`     | Loading state indicator                              |
 | `fetchData` | `function`    | Function to trigger the API call (for GET requests)  |
 | `postData`  | `function`    | Function to trigger the API call (for POST requests) |
+| `putData`   | `function`    | Function to trigger the API call (for PUT requests)  |
+| `patchData` | `function`    | Function to trigger the API call (for PATCH requests) |
+| `deleteData`| `function`    | Function to trigger the API call (for DELETE requests) |
+
+**Function Name Auto-Generation:**
+- `GET` → `fetchData`
+- `POST` → `postData`
+- `PUT` → `putData`
+- `PATCH` → `patchData`
+- `DELETE` → `deleteData`
+
+**Function Signature:**
+```typescript
+functionName(options: {
+  path?: Record<string, any>;
+  header?: Record<string, any>;
+  body?: Record<string, any>;
+  query?: Record<string, any>;
+}, callbacks?: {
+  onSuccess?: (data: T) => void;
+  onError?: (error: any) => void;
+}): void
+```
 
 ## 📖 Examples
 
@@ -123,15 +163,16 @@ const useGetPost = createApiHook({
   method: "GET",
   baseURL: "https://jsonplaceholder.typicode.com",
   endpoint: "/posts/:postId",
-  requiredProps: ["postId"],
-  pathParams: ["postId"],
+  // Path params are automatically extracted from endpoint
 });
 
 // Usage
 const { response, loading, error, fetchData } = useGetPost();
 
 useEffect(() => {
-  fetchData({ postId: "1" });
+  fetchData({
+    path: { postId: "1" }
+  });
 }, []);
 ```
 
@@ -142,15 +183,31 @@ const useCreateUser = createApiHook({
   method: "POST",
   baseURL: "https://api.example.com",
   endpoint: "/users",
-  requiredProps: ["name", "email"],
-  functionName: "postData", // Returns postData instead of fetchData
+  options: [
+    {
+      key: "name",
+      location: "body",
+      required: true,
+    },
+    {
+      key: "email",
+      location: "body",
+      required: true,
+    },
+  ],
+  // functionName is automatically "postData" for POST requests
 });
 
 // Usage
 const { loading, error, postData } = useCreateUser();
 
-const handleSubmit = (userData) => {
-  postData(userData, {
+const handleSubmit = () => {
+  postData({
+    body: {
+      name: "John Doe",
+      email: "john@example.com"
+    }
+  }, {
     onSuccess: (newUser) => {
       console.log("User created:", newUser);
       router.push(`/users/${newUser.id}`);
@@ -163,19 +220,32 @@ const handleSubmit = (userData) => {
 };
 ```
 
-### Dynamic Endpoint with Query Parameters
+### GET Request with Query Parameters
 
 ```typescript
 const useSearchUsers = createApiHook({
   method: "GET",
   baseURL: "https://api.example.com",
-  endpoint: ({ category }) =>
-    category ? `/users/search/${category}` : "/users/search",
-  defaultProps: {
-    limit: 10,
-    offset: 0,
-  },
-  queryParams: ["query", "limit", "offset"],
+  endpoint: "/users/search",
+  options: [
+    {
+      key: "query",
+      location: "query",
+      // Optional (no defaultValue, no required: true)
+    },
+    {
+      key: "limit",
+      location: "query",
+      defaultValue: 10,
+      // Optional (has defaultValue, so implicitly optional)
+    },
+    {
+      key: "offset",
+      location: "query",
+      defaultValue: 0,
+      // Optional (has defaultValue, so implicitly optional)
+    },
+  ],
 });
 
 // Usage
@@ -183,11 +253,48 @@ const { response, fetchData } = useSearchUsers();
 
 useEffect(() => {
   fetchData({
-    category: "developers",
-    query: "React",
-    limit: 20,
+    query: {
+      query: "React",
+      limit: 20,
+    }
   });
 }, []);
+```
+
+### Typed Parameters with Type Safety
+
+```typescript
+import { createApiHook, param } from "react-api-forge";
+
+type LanguageCode = "en_US" | "en_GR" | "es_ES";
+
+const useGetUser = createApiHook({
+  method: "GET",
+  baseURL: "https://api.example.com",
+  endpoint: "/users/:userId",
+  // Path params are automatically extracted from endpoint
+  options: [
+    param<LanguageCode>({
+      key: "lang",
+      location: "query",
+      defaultValue: "en_US",
+      // Optional (has defaultValue, so implicitly optional)
+    }),
+  ],
+});
+
+// Usage - TypeScript will enforce correct types
+fetchData({
+  path: { userId: "123" },
+  query: { lang: "en_GR" }
+}); // ✅ Valid
+fetchData({
+  path: { userId: "123" },
+  query: { lang: "fr_FR" }
+}); // ❌ Type error
+fetchData({
+  path: { userId: "123" }
+}); // ✅ Valid (lang uses default "en_US")
 ```
 
 ### Response Transformation
@@ -197,7 +304,7 @@ const useGetUserProfile = createApiHook({
   method: "GET",
   baseURL: "https://api.example.com",
   endpoint: "/users/:userId/profile",
-  pathParams: ["userId"],
+  // Path params are automatically extracted from endpoint
   transformResponse: (data) => ({
     ...data,
     fullName: `${data.firstName} ${data.lastName}`,
@@ -241,16 +348,60 @@ const useAuthenticatedRequest = createApiHook({
 });
 ```
 
-### Conditional Endpoints
+### Multiple Path Parameters
 
 ```typescript
 const useGetData = createApiHook({
   method: "GET",
   baseURL: "https://api.example.com",
-  endpoint: ({ userId, isAdmin }) =>
-    isAdmin ? `/admin/users/${userId}` : `/users/${userId}`,
-  requiredProps: ["userId"],
-  pathParams: ["userId"],
+  endpoint: "/users/:userId/posts/:postId",
+  // Multiple path params are automatically extracted
+});
+
+// Usage
+fetchData({
+  path: {
+    userId: "123",
+    postId: "456"
+  }
+});
+```
+
+### Complex Example with Header Parameters
+
+```typescript
+const useAuthenticatedRequest = createApiHook({
+  method: "GET",
+  baseURL: "https://api.example.com",
+  endpoint: "/protected-data/:resourceId",
+  // Path params are automatically extracted from endpoint
+  options: [
+    {
+      key: "Authorization",
+      location: "header",
+      required: true,
+      // Explicitly required (no defaultValue)
+    },
+    {
+      key: "version",
+      location: "query",
+      defaultValue: "v1",
+      // Optional (has defaultValue, so implicitly optional)
+    },
+  ],
+});
+
+// Usage
+fetchData({
+  path: {
+    resourceId: "123"
+  },
+  header: {
+    Authorization: `Bearer ${token}`
+  },
+  query: {
+    version: "v2"
+  }
 });
 ```
 
@@ -265,23 +416,29 @@ interface User {
   email: string;
 }
 
-interface GetUserProps {
-  userId: string;
-  includeProfile?: boolean;
-}
-
-const useGetUser = createApiHook<GetUserProps, User>({
+const useGetUser = createApiHook<User>({
   method: "GET",
   baseURL: "https://api.example.com",
   endpoint: "/users/:userId",
-  requiredProps: ["userId"],
-  pathParams: ["userId"],
-  queryParams: ["includeProfile"],
+  // Path params are automatically extracted from endpoint
+  options: [
+    {
+      key: "includeProfile",
+      location: "query",
+      // Optional (no defaultValue, no required: true)
+    },
+  ],
 });
 
 // TypeScript will enforce correct prop types
 const { response } = useGetUser();
 // response is typed as User | null
+
+// Usage with grouped params
+fetchData({
+  path: { userId: "123" },
+  query: { includeProfile: true }
+});
 ```
 
 ## 🛠️ Requirements

@@ -1,5 +1,9 @@
-export { createApiHook } from './createApiHook';
+export { createApiHook, param } from './createApiHook';
 export type {
     ApiHookConfig,
-    ApiHookResult
-} from './createApiHook';
+    ApiHookResult,
+    ApiParam,
+    ApiCallOptions,
+    ApiHookFunction,
+    ParamLocation
+} from './types';
