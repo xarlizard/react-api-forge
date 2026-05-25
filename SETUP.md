@@ -2,8 +2,7 @@
 
 ## Prerequisites
 
-- Node.js 18+
-- npm or yarn
+- Bun 1.0+ (replaces npm/Node.js for this project)
 - Git
 
 ## Getting Started
@@ -11,17 +10,17 @@
 ```bash
 git clone https://github.com/xarlizard/react-api-forge.git
 cd react-api-forge
-npm install
+bun install
 ```
 
 ## Scripts
 
 ```bash
-npm run build      # Build the package
-npm run test       # Run tests
-npm run lint       # Lint code
-npm run typecheck  # Type checking
-npm run dev        # Run all checks
+bun run build      # Build the package
+bun run test       # Run tests
+bun run lint       # Lint code
+bun run typecheck  # Type checking
+bun run dev        # Run all checks
 ```
 
 ## Publishing
@@ -34,9 +33,9 @@ npm run dev        # Run all checks
 ### Manual Release
 
 ```bash
-npm run release:ps        # Patch version
-npm run release:ps:minor  # Minor version
-npm run release:ps:major  # Major version
+bun run release:ps        # Patch version
+bun run release:ps:minor  # Minor version
+bun run release:ps:major  # Major version
 ```
 
 ## Testing

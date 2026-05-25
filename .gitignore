@@ -68,12 +68,6 @@ Thumbs.db
 # TypeScript cache
 *.tsbuildinfo
 
-# Optional npm cache directory
-.npm
-
-# Optional eslint cache
-.eslintcache
-
 # Microbundle cache
 .rpt2_cache/
 .rts2_cache_cjs/
@@ -83,3 +77,7 @@ Thumbs.db
 # Temporary folders
 tmp/
 temp/
+
+# Bun
+bun.lockb
+.bun/
