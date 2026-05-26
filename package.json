@@ -34,7 +34,7 @@
     "dev:build": "pwsh -ExecutionPolicy Bypass -File scripts/dev.ps1 -Task build",
     "dev:lint": "pwsh -ExecutionPolicy Bypass -File scripts/dev.ps1 -Task lint",
     "dev:typecheck": "pwsh -ExecutionPolicy Bypass -File scripts/dev.ps1 -Task typecheck",
-    "prepublishOnly": "npm run build && npm run test && npm run lint && npm run typecheck",
+    "prepublishOnly": "bun run build && bun run test && bun run lint && bun run typecheck",
     "setup": "node scripts/setup.js",
     "setup:ps": "pwsh -ExecutionPolicy Bypass -File scripts/setup.ps1",
     "release": "node scripts/release.js patch",
@@ -44,6 +44,7 @@
     "release:ps:minor": "pwsh -ExecutionPolicy Bypass -File scripts/release.ps1 -VersionType minor",
     "release:ps:major": "pwsh -ExecutionPolicy Bypass -File scripts/release.ps1 -VersionType major"
   },
+  "packageManager": "bun@latest",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/xarlizard/react-api-forge.git"

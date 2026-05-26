@@ -22,25 +22,25 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v6
 
-      - name: Setup Node.js
-        uses: actions/setup-node@v6
+      - name: Setup Bun
+        uses: oven-sh/setup-bun@v1
         with:
-          node-version: "18"
+          bun-version: latest
 
       - name: Install dependencies
-        run: npm ci
+        run: bun install --frozen-lockfile
 
       - name: Run linting
-        run: npm run lint
+        run: bun run lint
 
       - name: Run type checking
-        run: npm run typecheck
+        run: bun run typecheck
 
       - name: Run tests
-        run: npm run test
+        run: bun run test
 
       - name: Build package
-        run: npm run build
+        run: bun run build
 
   publish-npm:
     needs: test
@@ -50,17 +50,16 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v6
 
-      - name: Setup Node.js
-        uses: actions/setup-node@v6
+      - name: Setup Bun
+        uses: oven-sh/setup-bun@v1
         with:
-          node-version: "18"
-          registry-url: "https://registry.npmjs.org"
+          bun-version: latest
 
       - name: Install dependencies
-        run: npm ci
+        run: bun install --frozen-lockfile
 
       - name: Build package
-        run: npm run build
+        run: bun run build
 
       - name: Publish to NPM (with fallback to scoped name)
         run: |
@@ -68,10 +67,10 @@ jobs:
           cp package.json package.json.backup
           
           # Try publishing with original name first
-          ORIGINAL_NAME=$(node -p "require('./package.json').name")
+          ORIGINAL_NAME=$(bun -e "console.log(require('./package.json').name)")
           echo "📦 Attempting to publish with original name: $ORIGINAL_NAME"
           
-          if npm publish; then
+          if bun publish; then
             echo "✅ Successfully published with original name: $ORIGINAL_NAME"
           else
             echo "❌ Failed to publish with original name, trying with scoped name..."
@@ -79,7 +78,7 @@ jobs:
             mv package.json.backup package.json
             
             # Create scoped version using GitHub username
-            node -e "
+            bun -e "
               const pkg = require('./package.json');
               const owner = process.env.GITHUB_REPOSITORY.split('/')[0];
               const originalName = pkg.name.replace(/^@[^/]+\//, ''); // Remove existing scope if any
@@ -92,12 +91,12 @@ jobs:
               require('fs').writeFileSync('package.json', JSON.stringify(pkg, null, 2));
             "
             
-            SCOPED_NAME=$(node -p "require('./package.json').name")
+            SCOPED_NAME=$(bun -e "console.log(require('./package.json').name)")
             echo "🚀 Publishing scoped package: $SCOPED_NAME"
             
-            if npm publish; then
+            if bun publish; then
               echo "✅ Successfully published with scoped name: $SCOPED_NAME"
-              echo "💡 Users can install with: npm install $SCOPED_NAME"
+              echo "💡 Users can install with: bun add $SCOPED_NAME"
             else
               echo "❌ Failed to publish even with scoped name: $SCOPED_NAME"
               echo "🔍 Please check NPM_TOKEN permissions and package configuration"
@@ -124,23 +123,22 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v6
 
-      - name: Setup Node.js
-        uses: actions/setup-node@v6
+      - name: Setup Bun
+        uses: oven-sh/setup-bun@v1
         with:
-          node-version: "18"
-          registry-url: "https://npm.pkg.github.com"
+          bun-version: latest
 
       - name: Install dependencies
-        run: npm ci
+        run: bun install --frozen-lockfile
 
       - name: Build package
-        run: npm run build
+        run: bun run build
 
       - name: Configure package for GitHub
         run: |
           # Create a temporary package.json for GitHub publishing
           cp package.json package.json.backup
-          node -e "
+          bun -e "
             const pkg = require('./package.json');
             const owner = process.env.GITHUB_REPOSITORY.split('/')[0];
             const repoName = process.env.GITHUB_REPOSITORY.split('/')[1];
@@ -158,7 +156,7 @@ jobs:
           "
 
       - name: Publish to GitHub Packages
-        run: npm publish
+        run: bun publish
         env:
           NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 

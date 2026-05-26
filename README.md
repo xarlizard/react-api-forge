@@ -27,9 +27,19 @@ A flexible and robust React hook factory for creating API hooks with consistent 
 npm install react-api-forge
 ```
 
+### Bun
+
+```bash
+bun add react-api-forge
+```
+
+### Yarn
+
 ```bash
 yarn add react-api-forge
 ```
+
+### PNPM
 
 ```bash
 pnpm add react-api-forge

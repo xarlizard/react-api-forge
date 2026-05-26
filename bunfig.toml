@@ -1,0 +1,22 @@
+# Bun configuration for react-api-forge
+
+[test]
+# Configure Jest test runner via Bun
+root = "src/__tests__"
+preload = []
+
+[install]
+# Frozen lockfile for CI environments
+# frozen = true
+
+# Use bun's native npm registry
+registry = "https://registry.npmjs.org/"
+
+[build]
+# Optimize for production builds
+optimize = "size"
+
+[bundle]
+# Configure bundling
+splitting = false
+bytecode = false
