@@ -3,8 +3,8 @@
 [![npm version](https://badge.fury.io/js/react-api-forge.svg)](https://badge.fury.io/js/react-api-forge)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![TypeScript](https://img.shields.io/badge/TypeScript-Ready-blue.svg)](https://www.typescriptlang.org/)
-[![Production Deployment](https://github.com/xarlizard/react-api-forge/actions/workflows/deploy.yml/badge.svg?branch=main)](https://github.com/xarlizard/react-api-forge/actions/workflows/deploy.yml)
-[![Coverage](https://codecov.io/gh/xarlizard/react-api-forge/branch/main/graph/badge.svg)](https://codecov.io/gh/xarlizard/react-api-forge)
+[![Production Deployment](https://github.com/charlite/react-api-forge/actions/workflows/deploy.yml/badge.svg?branch=main)](https://github.com/charlite/react-api-forge/actions/workflows/deploy.yml)
+[![Coverage](https://codecov.io/gh/charlite/react-api-forge/branch/main/graph/badge.svg)](https://codecov.io/gh/charlite/react-api-forge)
 
 A flexible and robust React hook factory for creating API hooks with consistent patterns. Build type-safe, reusable API hooks with built-in loading states, error handling, and request cancellation.
 
@@ -48,7 +48,7 @@ pnpm add react-api-forge
 ### GitHub Packages
 
 ```bash
-npm install @Xarlizard/react-api-forge
+npm install @charlite/react-api-forge
 ```
 
 > **Note**: For GitHub Packages, you'll need to configure your `.npmrc` file. See [PUBLISHING.md](./PUBLISHING.md) for details.
@@ -478,4 +478,4 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 ---
 
-Made with ❤️ by [Xarlizard](https://github.com/xarlizard)
+Made with ❤️ by [charlite](https://github.com/charlite)
