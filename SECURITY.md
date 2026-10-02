@@ -20,7 +20,7 @@ We take security seriously and appreciate your efforts to responsibly disclose s
 Instead, please report security vulnerabilities by:
 
 1. **GitHub Security Advisory**: Use GitHub's private vulnerability reporting feature
-2. **Direct Message**: Contact [@xarlizard](https://github.com/xarlizard) directly
+2. **Direct Message**: Contact [@charlite](https://github.com/charlite) directly
 
 ### What to Include
 

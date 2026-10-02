@@ -8,7 +8,7 @@
 ## Getting Started
 
 ```bash
-git clone https://github.com/xarlizard/react-api-forge.git
+git clone https://github.com/charlite/react-api-forge.git
 cd react-api-forge
 bun install
 ```

@@ -47,14 +47,14 @@
   "packageManager": "bun@latest",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/xarlizard/react-api-forge.git"
+    "url": "git+https://github.com/charlite/react-api-forge.git"
   },
   "publishConfig": {
     "access": "public"
   },
-  "homepage": "https://github.com/xarlizard/react-api-forge#readme",
+  "homepage": "https://github.com/charlite/react-api-forge#readme",
   "bugs": {
-    "url": "https://github.com/xarlizard/react-api-forge/issues"
+    "url": "https://github.com/charlite/react-api-forge/issues"
   },
   "keywords": [
     "react",
@@ -72,8 +72,8 @@
     "error-handling"
   ],
   "author": {
-    "name": "Xarlizard",
-    "url": "https://github.com/xarlizard"
+    "name": "charlite",
+    "url": "https://github.com/charlite"
   },
   "license": "MIT",
   "dependencies": {
